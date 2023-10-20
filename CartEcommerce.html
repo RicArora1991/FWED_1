@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #131212;
+    color: white;
+    padding: 10px 20px;
+}
+.navbar a{
+    color: white;
+    text-decoration: none;
+}
+.navbar h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.cart-icon {
+    cursor: pointer;
+    font-size: 24px;
+}
+
+.cart-container {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+}
+
+.product-list, .cart {
+    flex: 1;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 5px 0;
+}
+
+button {
+    padding: 5px 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+#totalCost {
+    font-weight: bold;
+}
+
+</style></head>
+<body>
+    <div class="navbar">
+        <h1>Get Everything</h1>
+        <a href="#">Mobiles</a>
+        <a href="#">Laptops</a>
+        <a href="#">Electronics</a>
+        <a href="#">Furniture</a>
+        <a href="#">Devices</a>
+
+        <div class="cart-icon" onclick="toggleCart()">🛒
+            <span id="cartItemCount">0</span>
+        </div>
+    </div>
+    <div class="cart-container">
+        <div class="product-list">
+            <h2>Products</h2>
+            <ul id="productList">
+                <!-- Product items will be dynamically added here -->
+            </ul>
+        </div>
+        <div class="cart">
+            <h2>Your Cart</h2>
+            <ul id="cartList">
+                <!-- Cart items will be dynamically added here -->
+            </ul>
+            <p>Total Cost: $<span id="totalCost">0.00</span></p>
+        </div>
+    </div>
+<script>
+    const products = [
+    { id: 1, name: "Product 1", price: 10.99, quantity: 0 },
+    { id: 2, name: "Product 2", price: 19.99, quantity: 0 },
+    { id: 3, name: "Product 3", price: 5.99, quantity: 0 },
+    // Add more products as needed
+];
+
+const cart = [];
+
+function displayProducts() {
+    const productList = document.getElementById("productList");
+    productList.innerHTML = "";
+
+    for (const product of products) {
+        const li = document.createElement("li");
+        li.innerHTML = `
+            ${product.name} - $${product.price.toFixed(2)}
+            <button onclick="addToCart(${product.id})">Add to Cart</button>
+        `;
+        productList.appendChild(li);
+    }
+}
+
+function displayCart() {
+    const cartList = document.getElementById("cartList");
+    cartList.innerHTML = "";
+
+    let totalCost = 0;
+    for (const item of cart) {
+        const li = document.createElement("li");
+        li.innerHTML = `
+            ${item.name} - $${(item.price * item.quantity).toFixed(2)}
+            <div>
+                <button onclick="decrementQuantity(${item.id})">-</button>
+                ${item.quantity}
+                <button onclick="incrementQuantity(${item.id})">+</button>
+            </div>
+            <button onclick="removeFromCart(${item.id})">Remove</button>
+        `;
+        cartList.appendChild(li);
+        totalCost += item.price * item.quantity;
+    }
+
+    document.getElementById("totalCost").textContent = totalCost.toFixed(2);
+}
+
+function addToCart(productId) {
+    const product = products.find(item => item.id === productId);
+    if (product) {
+        product.quantity++;
+        if (!cart.includes(product)) {
+            cart.push(product);
+        }
+        displayCart();
+    }
+}
+
+function removeFromCart(productId) {
+    const product = products.find(item => item.id === productId);
+    if (product) {
+        product.quantity = 0;
+        const index = cart.indexOf(product);
+        if (index !== -1) {
+            cart.splice(index, 1);
+        }
+        displayCart();
+    }
+}
+
+function incrementQuantity(productId) {
+    const product = products.find(item => item.id === productId);
+    if (product) {
+        product.quantity++;
+        displayCart();
+    }
+}
+
+function decrementQuantity(productId) {
+    const product = products.find(item => item.id === productId);
+    if (product && product.quantity > 0) {
+        product.quantity--;
+        if (product.quantity === 0) {
+            removeFromCart(productId);
+        } else {
+            displayCart();
+        }
+    }
+}
+
+function toggleCart() {
+    const cartContainer = document.querySelector('.cart-container');
+    cartContainer.classList.toggle('show-cart');
+}
+
+displayProducts();
+// ... (rest of the code remains the same)
+
+function updateCartItemCount() {
+    const cartItemCount = document.getElementById("cartItemCount");
+    let itemCount = 0;
+    for (const item of cart) {
+        itemCount += item.quantity;
+    }
+    cartItemCount.textContent = itemCount;
+}
+
+// ... (rest of the code remains the same)
+
+function addToCart(productId) {
+    const product = products.find(item => item.id === productId);
+    if (product) {
+        product.quantity++;
+        if (!cart.includes(product)) {
+            cart.push(product);
+        }
+        displayCart();
+        updateCartItemCount(); // Update the cart item count
+    }
+}
+
+function removeFromCart(productId) {
+    const product = products.find(item => item.id === productId);
+    if (product) {
+        product.quantity = 0;
+        const index = cart.indexOf(product);
+        if (index !== -1) {
+            cart.splice(index, 1);
+        }
+        displayCart();
+        updateCartItemCount(); // Update the cart item count
+    }
+}
+
+// ... (rest of the code remains the same)
+
+// Initial update of the cart item count
+updateCartItemCount();
+
+
+</script>
+</body>
+</html>

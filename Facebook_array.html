@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Facebook-Like App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+        }
+
+        h1 {
+            background-color: #1877f2;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            margin: 0;
+        }
+
+        #postForm {
+            background-color: #fff;
+            padding: 10px;
+            margin: 20px auto;
+            width: 80%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        #postText {
+            width:98%;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+            resize: none;
+        }
+
+        #postButton {
+            background-color: #1877f2;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        #postButton:hover {
+            background-color: #1660e1;
+        }
+
+        #postContainer {
+            background-color: #fff;
+            width: 80%;
+            margin: 0 auto;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        .post {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .post p {
+            margin: 0;
+        }
+
+        .post button {
+            background-color: transparent;
+            border: none;
+            color: #1877f2;
+            cursor: pointer;
+        }
+
+        .post button:hover {
+            text-decoration: underline;
+        }
+
+        .comment {
+            margin: 5px 0;
+            padding-left: 20px;
+            border-left: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <h1>Facebook-Like App</h1>
+    <div id="postForm">
+        <textarea id="postText" placeholder="Write a post"></textarea>
+        <button id="postButton">Post</button>
+    </div>
+
+    <div id="postContainer">
+        <!-- Posts will be displayed here -->
+    </div>
+
+    <script>
+        const postText = document.getElementById("postText");
+        const postButton = document.getElementById("postButton");
+        const postContainer = document.getElementById("postContainer");
+        let posts = [];
+
+        function addPost() {
+            const text = postText.value.trim();
+            if (text !== "") {
+                const post = {
+                    text: text,
+                    likes: 0,
+                    comments: [],
+                };
+                posts.push(post);
+                postText.value = "";
+                displayPosts();
+            }
+        }
+
+        function likePost(index) {
+            posts[index].likes++;
+            displayPosts();
+        }
+
+        function addComment(index, commentText) {
+            const comment = { text: commentText };
+            posts[index].comments.push(comment);
+            displayPosts();
+        }
+
+        function displayPosts() {
+            postContainer.innerHTML = "";
+            posts.forEach((post, index) => {
+                const postElement = document.createElement("div");
+                postElement.innerHTML = `
+                    <p>${post.text}</p>
+                    <button onclick="likePost(${index})">Like (${post.likes})</button>
+                    <input type="text" id="commentInput-${index}" placeholder="Add a comment">
+                    <button onclick="addComment(${index}, document.getElementById('commentInput-${index}').value)">Comment</button>
+                    <ul>
+                        ${post.comments.map(comment => `<li>${comment.text}</li>`).join('')}
+                    </ul>
+                `;
+                postContainer.appendChild(postElement);
+            });
+        }
+
+        postButton.addEventListener("click", addPost);
+
+        displayPosts();
+    </script>
+</body>
+</html>

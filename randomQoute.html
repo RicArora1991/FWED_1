@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background-image: url('https://secretnyc.co/wp-content/uploads/2022/09/fallfoliage.jpg');
+            height: 100vh;
+            background-size: 100% 100%;
+        }
+
+        .box {
+            width: 640px;
+            height: 200px;
+            background-color: rgba(0, 0, 0, 0.8);
+            margin: 50px auto;
+            color: yellow;
+            border: 40px dotted goldenrod;
+            padding: 20px;
+            height: 320px;
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-clip: padding-box;
+
+
+        }
+
+        .qoute_generator {
+            /* background-color: red; */
+            text-align: center;
+            color: #f17c10;
+        }
+
+        #btn_generateqoute {
+            padding: 10px 13px;
+            background-color: #f17c10;
+            border: none;
+            border-radius: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <h1 style="text-align: center;">Welcome to the world of Autumn</h1>
+        <!-- <p style="text-align: justify;"> Autumn is the season when the duration of daylight becomes noticeably shorter
+            and the temperature cools considerably. Day length decreases and night length increases as the season
+            progresses until the Winter Solstice in December (Northern Hemisphere) and June (Southern Hemisphere). One
+            of its main features in temperate climates is the striking change in colour for the leaves of deciduous
+            trees as they prepare to shed.</p> -->
+        <div class="qoute_generator">
+            <div id="image_qoute"></div>
+            <p id="qoute_text"></p>
+            <p id="qoute_author"></p>
+            
+            <button id="btn_generateqoute">Generate Autumn Qoute</button>
+
+        </div>
+    </div>
+    <script>
+        const qoutes = [
+            {
+                text: "Autumn... the year's last, loveliest smile.",
+                author: 'William Cullen Bryant',
+                imageUrl: "autumn1.png",
+            },
+            {
+                text: "Delicious autumn! My very soul is wedded to it, and if I were a bird I would fly about the earth seeking the successive autumns.",
+                author: 'George EliotWilliam Cullen Bryant',
+                imageUrl: "autumn2.png",
+            },
+            {
+                text:'Autumn is the season of change, where the world turns from green to gold, and we must embrace the beauty of letting go.',
+                author:'L.M. Montgomery',
+                imageUrl: "autumn3.png",
+            },
+            {
+                text:'Autumn carries the spirit of transformation; just as the leaves fall, we too can shed our old selves and bloom anew.',
+                author:'Rev. Danielle Dowdy',
+                imageUrl: "autumn3.png",
+            },
+            {
+                text:'Autumn is a second spring when every leaf is a flower, and in the crisp air, we find renewal.',
+                author:'Albert Camus',
+                imageUrl: "autumn1.png",
+            }
+        ];
+
+        function generateRandomQoute(){
+            const randomIndex=Math.floor(Math.random()*qoutes.length);
+            const randomQoute=qoutes[randomIndex]
+            
+            document.getElementById('image_qoute').innerHTML=`<img src="${randomQoute.imageUrl}"  width="100" height="100">`;
+            document.getElementById('qoute_text').textContent=randomQoute.text;
+            document.getElementById('qoute_author').textContent=randomQoute.author;
+            const btn_generateqoute= document.getElementById('btn_generateqoute');
+        }
+        btn_generateqoute.addEventListener('click',generateRandomQoute)
+
+    </script>
+</body>
+
+</html>

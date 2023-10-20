@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friend Dice Game</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    text-align: center;
+}
+
+.container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    margin: 20px auto;
+    max-width: 400px;
+}
+
+h1 {
+    color: #333;
+}
+
+h2 {
+    color: #555;
+}
+
+input[type="text"] {
+    padding: 5px;
+    margin: 5px;
+}
+
+button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+ #gameZone {
+    display: none;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Friend Dice Game</h1>
+        <div id="friendsInput">
+            <h2>Enter Your Six Friends' Names:</h2>
+            <input type="text" id="friendInput" placeholder="Enter a name">
+            <button id="addFriend">Add Friend</button>
+        </div>
+        <div id="friendsList">
+            <h2>Your Friends:</h2>
+            <ul id="friendNames"></ul>
+        </div>
+        <button id="startGame">Enter the Game Zone</button>
+        <div id="gameZone">
+            <h2>Roll the Dice:</h2>
+            <button id="rollDice">Roll</button>
+            <p id="diceResult"></p>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const friends = [];
+            const friendInput = document.getElementById("friendInput");
+            const startGameBtn = document.getElementById("startGame");
+            const gameZone = document.getElementById("gameZone");
+            const rollDiceBtn = document.getElementById("rollDice");
+            const diceResult = document.getElementById("diceResult");
+            let currentPlayerIndex = 0;
+            let isGameStarted = false;
+    
+            document.getElementById("addFriend").addEventListener("click", function () {
+                const name = friendInput.value.trim();
+    
+                if (name && friends.indexOf(name) === -1 && friends.length < 6) {
+                    friends.push(name);
+                    friendInput.value = "";
+                } else if (friends.length >= 6) {
+                    alert("You can only add six friends.");
+                } else {
+                    alert("Please enter a unique name.");
+                }
+            });
+    
+            startGameBtn.addEventListener("click", function () {
+                if (friends.length < 6) {
+                    alert("Please add six friends first.");
+                    return;
+                }
+    
+                document.getElementById("friendsInput").style.display = "none";
+                startGameBtn.style.display = "none";
+                gameZone.style.display = "block";
+                isGameStarted = true;
+                updateTurnMessage();
+            });
+    
+            rollDiceBtn.addEventListener("click", function () {
+                if (!isGameStarted) {
+                    alert("Please start the game first.");
+                    return;
+                }
+    
+                const randomNumber = Math.floor(Math.random() * 6) + 1;
+                let activity;
+    
+                switch (randomNumber) {
+                    case 1:
+                        activity = "Go for a walk with";
+                        break;
+                    case 2:
+                        activity = "Have a movie night with";
+                        break;
+                    case 3:
+                        activity = "Cook dinner for";
+                        break;
+                    case 4:
+                        activity = "Call and chat with";
+                        break;
+                    case 5:
+                        activity = "Play a game with";
+                        break;
+                    case 6:
+                        activity = "Plan a trip with";
+                        break;
+                }
+    
+                const currentFriend = friends[currentPlayerIndex];
+                const otherFriends = friends.filter((friend, index) => index !== currentPlayerIndex);
+                const randomOtherFriend = otherFriends[Math.floor(Math.random() * otherFriends.length)];
+    
+                diceResult.innerHTML = `${currentFriend}'s turn: You rolled a ${randomNumber}. ${activity} ${randomOtherFriend}.`;
+    
+                // Increment the currentPlayerIndex to move to the next player
+                currentPlayerIndex = (currentPlayerIndex + 1) % friends.length;
+                updateTurnMessage();
+            });
+    
+            function updateTurnMessage() {
+                const currentFriend = friends[currentPlayerIndex];
+                document.getElementById("currentPlayerName").innerHTML = currentFriend;
+            }
+        });
+    </script>
+    
+
+</body>
+</html>

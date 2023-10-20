@@ -1,0 +1,66 @@
+<!-- Creating a simple application to showcase the usage of storing data in JavaScript can help you understand and
+demonstrate key concepts. Here's an example of a "To-Do List" application that stores tasks using different storage
+methods, such as variables, arrays, and local storage. This example will cover the fundamental concepts of data storage
+in JavaScript. -->
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JavaScript Storage Showcase</title>
+</head>
+<body>
+    <h1>To-Do List</h1>
+    
+    <input type="text" id="taskInput" placeholder="Add a new task">
+    <button onclick="addTask()">Add</button>
+    
+    <ul id="taskList"></ul>
+    
+    <button onclick="clearTasks()">Clear All</button>
+    
+    <script>
+        // Using variables to store tasks
+        let tasks = [];
+
+        // Using local storage to persist data
+        if (localStorage.getItem('tasks')) {
+            tasks = JSON.parse(localStorage.getItem('tasks'));
+            displayTasks();
+        }
+
+        function addTask() {
+            const taskInput = document.getElementById('taskInput');
+            const taskText = taskInput.value;
+
+            if (taskText) {
+                tasks.push(taskText);
+                taskInput.value = '';
+                displayTasks();
+                saveTasksToLocalStorage();
+            }
+        }
+
+        function displayTasks() {
+            const taskList = document.getElementById('taskList');
+            taskList.innerHTML = '';
+            
+            for (let i = 0; i < tasks.length; i++) {
+                const taskItem = document.createElement('li');
+                taskItem.textContent = tasks[i];
+                taskList.appendChild(taskItem);
+            }
+        }
+
+        function clearTasks() {
+            tasks = [];
+            displayTasks();
+            saveTasksToLocalStorage();
+        }
+
+        function saveTasksToLocalStorage() {
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+        }
+    </script>
+</body>
+</html>
